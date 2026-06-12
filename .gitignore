@@ -17,3 +17,8 @@ report/_*.pdf
 
 # Başka projeye ait şablon (depoya dahil değil)
 kapak_buradan.html
+
+# Office/Word web-export artefaktlari
+report/RAPOR_dosyalar/
+*_dosyalar/
+*.htm
