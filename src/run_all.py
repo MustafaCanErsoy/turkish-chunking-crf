@@ -3,7 +3,7 @@
 Tüm boru hattını tek komutla çalıştırır:
   1) UD verisini indir   2) Chunk CoNLL'e dönüştür
   3) Modelleri eğit      4) Değerlendir (+grafikler)
-  5) Uçtan uca değerlendir   6) Raporu üret
+  5) Uçtan uca değerlendir
 
 Kullanım:  python src/run_all.py
 """
@@ -25,16 +25,15 @@ def step(title, module, argv=None):
 def main():
     ud = os.path.join(HERE, "..", "data", "ud", "tr_imst-ud-train.conllu")
     if not os.path.exists(ud):
-        step("1/6  Veri indiriliyor", "download_data.py")
+        step("1/5  Veri indiriliyor", "download_data.py")
     else:
-        print("1/6  Veri zaten mevcut, indirme atlandı.")
-    step("2/6  CoNLL-U -> Chunk CoNLL dönüşümü", "conllu_to_chunks.py")
-    step("3/6  Modeller eğitiliyor", "train.py")
-    step("4/6  Değerlendirme (gold POS)", "evaluate.py")
-    step("5/6  Uçtan uca değerlendirme (predicted POS)", "evaluate.py",
+        print("1/5  Veri zaten mevcut, indirme atlandı.")
+    step("2/5  CoNLL-U -> Chunk CoNLL dönüşümü", "conllu_to_chunks.py")
+    step("3/5  Modeller eğitiliyor", "train.py")
+    step("4/5  Değerlendirme (gold POS)", "evaluate.py")
+    step("5/5  Uçtan uca değerlendirme (predicted POS)", "evaluate.py",
          ["--task", "chunk", "--end2end"])
-    step("6/6  Rapor üretimi (RAPOR.html)", "generate_report_html.py")
-    print("\nTAMAMLANDI. Çıktılar: data/chunks, models, results, RAPOR.html")
+    print("\nTAMAMLANDI. Çıktılar: data/chunks, models, results")
 
 
 if __name__ == "__main__":

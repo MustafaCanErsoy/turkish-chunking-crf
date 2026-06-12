@@ -33,7 +33,6 @@ otomatik olarak işaretleyen, **CRF (Conditional Random Fields)** tabanlı bir
 - 🧠 **İstatistiksel ML**: Conditional Random Fields (dizisel etiketleme)
 - 🔁 **Uçtan uca**: ham cümle → POS → CHUNK → CLAUSE
 - 📊 Otomatik **precision / recall / F1 / accuracy + karışıklık matrisi + grafikler**
-- 📄 Tek komutla **otomatik rapor** (HTML)
 - 🇹🇷 Gerçek veri: **Universal Dependencies Türkçe-IMST** treebank
 
 ## 🚀 Hızlı Başlangıç
@@ -42,7 +41,7 @@ otomatik olarak işaretleyen, **CRF (Conditional Random Fields)** tabanlı bir
 # 1) Bağımlılıklar
 pip install -r requirements.txt
 
-# 2) Tüm boru hattı: indir → dönüştür → eğit → test → rapor
+# 2) Tüm boru hattı: indir → dönüştür → eğit → test
 python src/run_all.py
 
 # 3) Ham bir cümleyi öbeklere ayır
@@ -99,14 +98,12 @@ data/chunks/*.conll  (ID FORM UPOS CHUNK CLAUSE)
 │   ├── train.py                # CRF eğitimi (pos, chunk, clause)
 │   ├── evaluate.py             # metrik + confusion matrix + grafik
 │   ├── predict.py              # ham cümle → öbekler (demo)
-│   ├── generate_report_html.py # otomatik HTML rapor
 │   └── run_all.py              # uçtan uca boru hattı
 ├── data/
 │   ├── ud/                     # ham UD treebank (CoNLL-U)
 │   └── chunks/                 # etiketli veri (CoNLL/BIO)
 ├── models/                     # eğitilmiş CRF modelleri (.pkl)
 ├── results/                    # metrikler (.txt) + grafikler (.png)
-├── assets/                     # rapor kapağı için BTÜ logosu
 ├── RAPOR_20360859046_MustafaCanErsoy.pdf  # 📄 RAPOR (proje raporu, PDF)
 ├── requirements.txt
 └── calistir.bat                # Windows tek-tık çalıştırma

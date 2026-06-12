@@ -7,9 +7,9 @@ echo ============================================
 python -m pip install -r requirements.txt
 echo.
 echo ============================================
-echo  Boru hatti calistiriliyor (indir-egit-test-rapor)...
+echo  Boru hatti calistiriliyor (indir-egit-test)...
 echo ============================================
 python src\run_all.py
 echo.
-echo Bitti. Rapor: RAPOR.html  (tarayicida acip PDF'e yazdirabilirsiniz)
+echo Bitti. Ciktilar: data\chunks, models, results
 pause
