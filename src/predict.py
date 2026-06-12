@@ -44,6 +44,12 @@ def predict(text, pos_crf, chunk_crf, clause_crf):
 
 
 def main():
+    # Windows'ta çıktı dosyaya yönlendirilse de Türkçe karakterler bozulmasın
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
     text = " ".join(sys.argv[1:]).strip()
     if not text:
         text = ("Dün akşam toplantıdan erken çıkan öğrencinin, hocasının önerdiği "

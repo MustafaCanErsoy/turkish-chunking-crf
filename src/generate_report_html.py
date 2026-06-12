@@ -19,10 +19,6 @@ from seqeval.metrics import (precision_score, recall_score, f1_score,
 from features import read_conll, sent2features, sent2labels
 import predict as P
 
-# ---- DÜZENLE ----
-OGRENCILER = ["Mustafa Can Ersoy — 20360859046"]
-# -----------------
-
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data", "chunks")
 RESULTS = os.path.join(HERE, "..", "results")
@@ -118,7 +114,6 @@ def main():
                     "<td>%s</td></tr>") % (i, t, pp, pc, pl)
 
     html = TEMPLATE.format(
-        ogrenciler="<br>".join(OGRENCILER),
         chunk_acc=pct(r_chunk["acc"]), chunk_f1=f3(r_chunk["F1"]),
         chunk_p=f3(r_chunk["P"]), chunk_r=f3(r_chunk["R"]),
         pos_acc=pct(r_pos["acc"]),

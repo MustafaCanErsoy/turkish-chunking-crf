@@ -106,6 +106,7 @@ data/chunks/*.conll  (ID FORM UPOS CHUNK CLAUSE)
 │   └── chunks/                 # etiketli veri (CoNLL/BIO)
 ├── models/                     # eğitilmiş CRF modelleri (.pkl)
 ├── results/                    # metrikler (.txt) + grafikler (.png)
+├── assets/                     # rapor kapağı için BTÜ logosu
 ├── report/RAPOR.html           # rapor (tarayıcıda açıp PDF'e yazdırılabilir)
 ├── requirements.txt
 └── calistir.bat                # Windows tek-tık çalıştırma
