@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Proje raporunu tek dosyalık, taşınabilir bir HTML olarak üretir (report/RAPOR.html).
+Proje raporunu tek dosyalık, taşınabilir bir HTML olarak üretir (kök dizinde RAPOR.html).
 - Metrikler ve örnek çıktı modellerden CANLI hesaplanır.
 - Grafikler (PNG) base64 olarak gömülür -> tek dosya, kolayca PDF'e çevrilir.
 - Yazdırıldığında ~5 sayfa (A4) olacak şekilde CSS ile düzenlenmiştir.
@@ -22,7 +22,7 @@ import predict as P
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data", "chunks")
 RESULTS = os.path.join(HERE, "..", "results")
-REPORT = os.path.join(HERE, "..", "report")
+REPORT = os.path.join(HERE, "..")   # rapor proje kök dizinine yazılır
 MODELS = os.path.join(HERE, "..", "models")
 ASSETS = os.path.join(HERE, "..", "assets")
 

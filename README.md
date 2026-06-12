@@ -107,7 +107,7 @@ data/chunks/*.conll  (ID FORM UPOS CHUNK CLAUSE)
 ├── models/                     # eğitilmiş CRF modelleri (.pkl)
 ├── results/                    # metrikler (.txt) + grafikler (.png)
 ├── assets/                     # rapor kapağı için BTÜ logosu
-├── report/RAPOR.html           # rapor (tarayıcıda açıp PDF'e yazdırılabilir)
+├── RAPOR.html                  # 📄 RAPOR (kök dizinde; tarayıcıda açıp PDF'e yazdırılabilir)
 ├── requirements.txt
 └── calistir.bat                # Windows tek-tık çalıştırma
 ```

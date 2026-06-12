@@ -34,7 +34,7 @@ def main():
     step("5/6  Uçtan uca değerlendirme (predicted POS)", "evaluate.py",
          ["--task", "chunk", "--end2end"])
     step("6/6  Rapor üretimi (RAPOR.html)", "generate_report_html.py")
-    print("\nTAMAMLANDI. Çıktılar: data/chunks, models, results, report/RAPOR.html")
+    print("\nTAMAMLANDI. Çıktılar: data/chunks, models, results, RAPOR.html")
 
 
 if __name__ == "__main__":

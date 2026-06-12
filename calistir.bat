@@ -11,5 +11,5 @@ echo  Boru hatti calistiriliyor (indir-egit-test-rapor)...
 echo ============================================
 python src\run_all.py
 echo.
-echo Bitti. Rapor: report\RAPOR.html  (tarayicida acip PDF'e yazdirabilirsiniz)
+echo Bitti. Rapor: RAPOR.html  (tarayicida acip PDF'e yazdirabilirsiniz)
 pause
