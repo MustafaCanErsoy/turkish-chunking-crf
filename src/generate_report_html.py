@@ -233,36 +233,55 @@ TEMPLATE = u"""<!DOCTYPE html>
 </div>
 
 <h2>1. Problem Tanımı</h2>
-<p>Chunking (sığ ayrıştırma), bir cümleyi tam sözdizimsel ağaca ayrıştırmadan,
-kelimeleri ardışık ve örtüşmeyen anlamlı öbeklere (isim öbeği, eylem öbeği vb.)
-gruplama görevidir. Bu çalışmada amaç, verilen bir Türkçe cümlede her kelimenin
-ait olduğu öbeği ve —ikincil katman olarak— bulunduğu yan cümleciği otomatik olarak
-belirlemektir. Görev, <b>BIO etiketleme şeması</b> ile dizisel etiketleme problemi
-olarak modellenmiştir: <code>B-</code> bir öbeğin başını, <code>I-</code> devamını,
-<code>O</code> ise hiçbir öbeğe ait olmamayı gösterir.</p>
-<p>İki etiket katmanı üretilmektedir: <b>CHUNK</b> (NP, VP, ADJP, ADVP, PP) ve
-<b>CLAUSE</b> (RELCL, COMPCL, ADVCL). Sistem, ham bir cümleyi alıp uçtan uca
-<b>POS → CHUNK → CLAUSE</b> sırasıyla işaretler. Örnek bir CoNLL/BIO satır dizisi:
-<span class="mono">1 Dün ADV B-ADVP · 3 toplantıdan NOUN B-NP · 5 çıkan VERB B-VP ·
-16 . PUNCT O</span></p>
+<p>Bir cümle, tek tek kelimelerden değil, anlamlı kelime gruplarından oluşur: bir
+isim ile onu niteleyen sözcükler bir isim öbeği, bir eylem ile yardımcıları bir
+eylem öbeği oluşturur. Chunking (sığ ayrıştırma), cümleyi tam bir sözdizimsel ağaca
+ayrıştırmadan bu temel öbekleri bulup sınıflandırma görevidir. Tam ayrıştırmaya göre
+daha hızlı ve hatalara karşı daha dayanıklı olduğundan; bilgi çıkarımı, varlık
+tanıma ve makine çevirisi gibi uygulamalarda sık kullanılan bir ön işleme adımıdır.</p>
+<p>Bu çalışmada iki katmanlı bir işaretleme yapılmıştır. Birincil katman olan
+<b>CHUNK</b>, beş temel öbeği ayırt eder: isim öbeği (NP), eylem öbeği (VP), sıfat
+öbeği (ADJP), zarf öbeği (ADVP) ve edat öbeği (PP). İkincil katman olan <b>CLAUSE</b>
+ise cümle içindeki yan cümlecikleri kapsar: ilgi cümleciği (RELCL), tümleç cümleciği
+(COMPCL) ve zarf cümleciği (ADVCL).</p>
+<p>Her iki katman da <b>BIO şeması</b> ile kodlanır. Bu şemada bir öbeğin ilk
+kelimesi <code>B-</code> (başlangıç), sonraki kelimeleri <code>I-</code> (iç) ve
+hiçbir öbeğe girmeyen kelimeler <code>O</code> (dışında) etiketini alır; böylece öbek
+sınırları kelime dizisi üzerinde belirsizliğe yer bırakmadan gösterilebilir. Örneğin
+&ldquo;Dün toplantıdan çıkan öğrenci&rdquo; parçasında &ldquo;Dün&rdquo; tek başına
+bir zarf öbeğidir (B-ADVP), &ldquo;toplantıdan çıkan öğrenci&rdquo; ise tek bir isim
+öbeği oluşturur (B-NP, I-NP, I-NP). Bu kodlama sayesinde problem, her kelimeye bir
+etiket atanan bir <b>dizisel etiketleme (sequence labeling)</b> problemine dönüşür.</p>
 
 <h2>2. Kullanılan Yöntemler ve Araçlar</h2>
-<p><b>Veri:</b> Eğitim ve test için açık lisanslı (CC BY-SA) <b>Universal
-Dependencies Türkçe-IMST</b> treebank'i kullanılmıştır. Treebank'in bağımlılık
-çözümlemesinden, deterministik dilbilgisi kurallarıyla öbek ve cümlecik BIO
-etiketleri türetilmiştir (toplam <b>{n_train} eğitim</b> ve <b>{n_test} test</b>
-cümlesi). <b>Öznitelikler:</b> her kelime için küçük harfli kelime, 1–4 harflik
-ön/son ekler, kelime şekli, büyük/küçük harf ve rakam bayrakları, <b>UPOS</b>
-etiketi ve ±2 komşuluk penceresindeki sözcük/POS bilgileri kullanılmıştır; Türkçe
-sondan eklemeli olduğundan son ek öznitelikleri öbek türünü ayırt etmede
-belirleyicidir.</p>
-<p><b>Model:</b> Sınıflandırıcı olarak, dizisel etiketlemenin standart istatistiksel
-yöntemi olan <b>CRF (Conditional Random Fields)</b> kullanılmıştır
-(<code>sklearn-crfsuite</code>, L-BFGS, L1/L2 düzenlileştirme). CRF, etiketler arası
-geçiş bağımlılıklarını (ör. <code>I-NP</code> ancak <code>B-NP</code>/<code>I-NP</code>
-ardından gelebilir) doğal olarak modeller. Üç model eğitilmiştir: POS etiketleyici,
-CHUNK (ana görev) ve CLAUSE. Metrikler ve grafikler scikit-learn, seqeval ve
-matplotlib ile üretilmiştir.</p>
+<h3>2.1 Veri ve İşaretleme</h3>
+<p>Türkçe için elle işaretlenmiş hazır bir chunking veri kümesi bulunmadığından,
+eğitim ve test verisi açık lisanslı Universal Dependencies <b>Türkçe-IMST</b>
+treebank'inden türetilmiştir. Bu treebank her cümle için sözcük türlerini (POS) ve
+kelimeler arasındaki bağımlılık ilişkilerini içerir. Bağımlılık ağacı üzerinde
+tanımladığımız dilbilgisi kurallarıyla, bir baş kelime ile ona bağlı sözcüklerin
+oluşturduğu öbekler ve cümleciklerin kapsamları otomatik olarak BIO etiketlerine
+çevrilmiştir. Elde edilen veri toplam <b>{n_train} eğitim</b> ve <b>{n_test} test</b>
+cümlesi içermekte ve CoNLL biçiminde proje dosyasında yer almaktadır.</p>
+<h3>2.2 Öznitelikler</h3>
+<p>Modelin her kelime için kullandığı öznitelikler yüzeysel ve bağlamsaldır:
+kelimenin kendisi, baştaki ve sondaki 1–4 harflik ekleri, büyük/küçük harf deseni,
+POS etiketi ve hemen çevresindeki iki komşuya kadar olan kelimelerin sözcük ve POS
+bilgileri. Türkçe sondan eklemeli bir dil olduğu için son ekler öbek türü hakkında
+güçlü ipuçları taşır; örneğin &ldquo;-da/-de&rdquo; eki çoğu zaman bir ismin, dolaylı
+olarak bir isim öbeğinin sonunu, fiil çekim ekleri ise bir eylem öbeğini işaret
+eder. Bu nedenle ek temelli öznitelikler başarıda belirleyici rol oynar.</p>
+<h3>2.3 Model</h3>
+<p>Sınıflandırıcı olarak <b>CRF (Conditional Random Fields)</b> seçilmiştir. CRF, her
+kelimeyi tek tek sınıflandırmak yerine cümlenin tüm etiket dizisini birlikte
+değerlendirir ve etiketler arasındaki geçiş kurallarını da öğrenir. Böylece
+&ldquo;I-NP yalnızca B-NP ya da I-NP'den sonra gelebilir&rdquo; gibi kısıtları
+kendiliğinden uygulayarak geçersiz etiket dizilerini önler; bu da onu BIO tabanlı
+öbekleme için doğal ve güçlü bir seçim yapar. Model, <code>sklearn-crfsuite</code>
+kütüphanesiyle L-BFGS optimizasyonu ve L1/L2 düzenlileştirme kullanılarak
+eğitilmiştir. Toplam üç model eğitilmiştir: ham metni işaretleyebilmek için bir POS
+etiketleyici, ana görev için CHUNK modeli ve yan cümlecikler için CLAUSE modeli.
+Değerlendirme ve grafikler scikit-learn, seqeval ve matplotlib ile üretilmiştir.</p>
 
 <h2>3. Sonuçlar (Çıktılar)</h2>
 <p>Ana görev olan chunking için test kümesinde sınıf bazında öbek (entity) düzeyi
@@ -279,11 +298,20 @@ başarı değerleri Tablo 1'de verilmiştir.</p>
 <figure><img src="{f1_chunk}" style="max-width:84%">
 <figcaption>Şekil 2. Sınıf bazında F1 değerleri — Chunking.</figcaption></figure>
 
-<p>Tüm görevlerin özet karşılaştırması Tablo 2'de sunulmuştur. Uçtan uca senaryoda
-POS etiketi de model tarafından tahmin edildiğinden başarı bir miktar düşmekte; bu,
-POS bilgisinin chunking için değerini göstermektedir. Cümlecik katmanı uzun ve iç
-içe geçen kapsamlar içerdiğinden öbek düzeyi F1'i düşük, kelime düzeyi doğruluğu
-yüksek kalır.</p>
+<p>Sonuçlar incelendiğinde, en yüksek başarı sınırları belirgin olan zarf ve isim
+öbeklerinde elde edilmiştir; zarf öbekleri çoğunlukla tek kelimeden oluştuğu için
+neredeyse kusursuz ayrılır. Buna karşılık sıfat ve edat öbekleri daha zordur:
+sıfatlar çoğu zaman bir isim öbeğinin içinde yer aldığından model onları sık sık isim
+öbeğiyle karıştırır. Bu durum Şekil 1'deki karışıklık matrisinde ADJP ile NP
+arasındaki karışma olarak açıkça görülmektedir. Edat öbeklerinin görece az sayıda
+örnekle temsil edilmesi de bu sınıftaki başarıyı sınırlamaktadır.</p>
+<p>Tablo 2, tüm görevlerin özetini sunar. Gerçekçi &ldquo;uçtan uca&rdquo; senaryoda,
+modele hazır POS etiketi verilmez ve POS da sistemin kendisi tarafından tahmin
+edilir; bu durumda öbek F1'i {chunk_f1}'den {e2e_f1}'e düşer. Bu düşüş, doğru POS
+bilgisinin öbekleme için ne kadar değerli olduğunu somut biçimde ortaya koyar. Yan
+cümlecik (CLAUSE) katmanı ise en zorlu görevdir: cümlecikler uzun ve çoğu zaman iç
+içe geçen kapsamlar oluşturduğundan, tam kapsam eşleşmesi gerektiren öbek F1'i düşük
+kalır; yine de kelime düzeyindeki doğruluk ({clause_acc}) makul bir seviyededir.</p>
 <table class="veri">
 <tr><th>Görev</th><th>Kelime Doğruluğu</th><th>Öbek F1</th></tr>
 <tr><td>POS etiketleme</td><td>{pos_acc}</td><td>—</td></tr>
@@ -299,11 +327,15 @@ yüksek kalır.</p>
 <tr><th>#</th><th>Kelime</th><th>POS</th><th>CHUNK</th><th>CLAUSE</th></tr>
 {ex_rows}
 </table>
-<p>Sonuç olarak, Türkçe için CRF tabanlı bir öbekleme sistemi geliştirilmiş; eğitim
-ve test boru hattı uçtan uca çalışır biçimde kurulmuştur. Ana görevde kelime
-düzeyinde {chunk_acc} doğruluk ve öbek düzeyinde {chunk_f1} F1 elde edilmiş; tüm
-işaretlemeler CoNLL/BIO biçiminde üretilmiş ve her sınıf için başarı oranları ile
-karışıklık matrisi raporlanmıştır.</p>
+<p>Sonuç olarak, Türkçe için CRF tabanlı bir öbekleme sistemi geliştirilmiş ve eğitim
+ile test süreçlerini uçtan uca yürüten çalışır bir boru hattı kurulmuştur. Ana
+görevde kelime düzeyinde {chunk_acc} doğruluk ve öbek düzeyinde {chunk_f1} F1 elde
+edilmiş; tüm işaretlemeler CoNLL/BIO biçiminde üretilmiş ve her sınıf için başarı
+oranları ile karışıklık matrisi raporlanmıştır. Çalışmanın başlıca sınırlılığı,
+etiketlerin bir treebank'ten kurallarla türetilmiş olmasıdır. İleride elle
+işaretlenmiş veri, morfolojik öznitelikler (örneğin Zemberek çözümlemeleri) veya
+kelime vektörleri eklenerek ve özellikle sıfat/edat öbekleri ile cümlecik katmanına
+odaklanılarak başarının daha da artırılması mümkündür.</p>
 
 </body></html>
 """
