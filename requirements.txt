@@ -3,4 +3,3 @@ sklearn-crfsuite>=0.5
 seqeval>=1.2
 matplotlib>=3.6
 numpy>=1.24
-

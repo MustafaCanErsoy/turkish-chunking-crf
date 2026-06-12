@@ -27,4 +27,3 @@ Token doğruluğu: 0.9125
    macro avg     0.8448    0.7952    0.8159     10032
 weighted avg     0.9128    0.9125    0.9112     10032
 
-

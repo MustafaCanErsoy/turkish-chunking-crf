@@ -122,4 +122,3 @@ def sent2labels(sent, col):
 
 def sent2tokens(sent):
     return [tok[0] for tok in sent]
-
