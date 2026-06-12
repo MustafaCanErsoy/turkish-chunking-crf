@@ -1,11 +1,11 @@
 ============================================================
-GOREV: POS Etiketleme
+GÖREV: POS Etiketleme
 ============================================================
-Test cumlesi : 1100
+Test cümlesi : 1100
 Test kelimesi: 10032
-Token accuracy: 0.9125
+Token doğruluğu: 0.9125
 
---- KELIME (TOKEN) DUZEYI sinif bazinda ---
+--- KELİME (TOKEN) DÜZEYİ sınıf bazında ---
               precision    recall  f1-score   support
 
          ADJ     0.8474    0.7865    0.8158       960

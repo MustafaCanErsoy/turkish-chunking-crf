@@ -61,8 +61,8 @@ def plot_confusion(y_true_flat, y_pred_flat, labels, title, out_png):
     ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=8)
     ax.set_yticklabels(labels, fontsize=8)
     ax.set_xlabel("Tahmin edilen")
-    ax.set_ylabel("Gercek")
-    ax.set_title(title + " - Karisiklik Matrisi (normalize)")
+    ax.set_ylabel("Gerçek")
+    ax.set_title(title + " - Karışıklık Matrisi (normalize)")
     for i in range(len(labels)):
         for j in range(len(labels)):
             v = cm[i, j]
@@ -86,7 +86,7 @@ def plot_f1_bars(report_dict, title, out_png):
     ax.set_xticklabels(classes, rotation=45, ha="right", fontsize=8)
     ax.set_ylim(0, 1)
     ax.set_ylabel("F1-score")
-    ax.set_title(title + " - Sinif Bazinda F1")
+    ax.set_title(title + " - Sınıf Bazında F1")
     for b, v in zip(bars, f1s):
         ax.text(b.get_x() + b.get_width() / 2, v + 0.01, "%.2f" % v,
                 ha="center", fontsize=7)
@@ -119,16 +119,16 @@ def evaluate_task(task, test_sents, end2end=False, pos_model=None):
     os.makedirs(RESULTS, exist_ok=True)
     lines = []
     lines.append("=" * 60)
-    lines.append("GOREV: %s%s" % (title, "  [uctan uca / predicted POS]" if end2end else ""))
+    lines.append("GÖREV: %s%s" % (title, "  [uçtan uca / tahmini POS]" if end2end else ""))
     lines.append("=" * 60)
-    lines.append("Test cumlesi : %d" % len(test_sents))
+    lines.append("Test cümlesi : %d" % len(test_sents))
     lines.append("Test kelimesi: %d" % len(yt))
-    lines.append("Token accuracy: %.4f" % accuracy_score(yt, yp))
+    lines.append("Token doğruluğu: %.4f" % accuracy_score(yt, yp))
 
     if task in ("chunk", "clause"):
         # entity (öbek) düzeyi - seqeval BIO bekler
         lines.append("")
-        lines.append("--- OBEK (ENTITY) DUZEYI [seqeval] ---")
+        lines.append("--- ÖBEK (ENTITY) DÜZEYİ [seqeval] ---")
         lines.append("Precision: %.4f" % precision_score(y_true, y_pred))
         lines.append("Recall   : %.4f" % recall_score(y_true, y_pred))
         lines.append("F1-measure: %.4f" % f1_score(y_true, y_pred))
@@ -141,7 +141,7 @@ def evaluate_task(task, test_sents, end2end=False, pos_model=None):
     rep_dict = classification_report(yt, yp, labels=labels, digits=4,
                                      zero_division=0, output_dict=True)
     lines.append("")
-    lines.append("--- KELIME (TOKEN) DUZEYI sinif bazinda ---")
+    lines.append("--- KELİME (TOKEN) DÜZEYİ sınıf bazında ---")
     lines.append(rep_txt)
 
     report_text = "\n".join(lines)

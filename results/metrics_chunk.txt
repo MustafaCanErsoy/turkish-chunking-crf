@@ -1,11 +1,11 @@
 ============================================================
-GOREV: Chunking (Öbekleme)
+GÖREV: Chunking (Öbekleme)
 ============================================================
-Test cumlesi : 1100
+Test cümlesi : 1100
 Test kelimesi: 10032
-Token accuracy: 0.8861
+Token doğruluğu: 0.8861
 
---- OBEK (ENTITY) DUZEYI [seqeval] ---
+--- ÖBEK (ENTITY) DÜZEYİ [seqeval] ---
 Precision: 0.8321
 Recall   : 0.8442
 F1-measure: 0.8381
@@ -23,7 +23,7 @@ F1-measure: 0.8381
 weighted avg     0.8318    0.8442    0.8378      5808
 
 
---- KELIME (TOKEN) DUZEYI sinif bazinda ---
+--- KELİME (TOKEN) DÜZEYİ sınıf bazında ---
               precision    recall  f1-score   support
 
       B-ADJP     0.7223    0.7335    0.7279       454

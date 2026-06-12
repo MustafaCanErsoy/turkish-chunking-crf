@@ -1,11 +1,11 @@
 ============================================================
-GOREV: Clause (Yan Cümlecik)
+GÖREV: Clause (Yan Cümlecik)
 ============================================================
-Test cumlesi : 1100
+Test cümlesi : 1100
 Test kelimesi: 10032
-Token accuracy: 0.7860
+Token doğruluğu: 0.7860
 
---- OBEK (ENTITY) DUZEYI [seqeval] ---
+--- ÖBEK (ENTITY) DÜZEYİ [seqeval] ---
 Precision: 0.3560
 Recall   : 0.2278
 F1-measure: 0.2778
@@ -21,7 +21,7 @@ F1-measure: 0.2778
 weighted avg     0.3404    0.2278    0.2700       575
 
 
---- KELIME (TOKEN) DUZEYI sinif bazinda ---
+--- KELİME (TOKEN) DÜZEYİ sınıf bazında ---
               precision    recall  f1-score   support
 
      B-ADVCL     0.4338    0.2906    0.3481       203
