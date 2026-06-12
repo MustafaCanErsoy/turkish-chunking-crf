@@ -136,3 +136,4 @@ treebank'inden türetilmiştir (CC BY-SA 4.0).
 
 ---
 <p align="center"><sub>Mustafa Can Ersoy — 20360859046</sub></p>
+

@@ -13,3 +13,4 @@ python src\run_all.py
 echo.
 echo Bitti. Ciktilar: data\chunks, models, results
 pause
+
