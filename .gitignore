@@ -22,3 +22,6 @@ kapak_buradan.html
 report/RAPOR_dosyalar/
 *_dosyalar/
 *.htm
+
+# Office gecici kilit dosyalari
+~$*

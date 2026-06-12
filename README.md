@@ -59,7 +59,7 @@ Test kümesi (1.100 cümle / 10.032 kelime):
 |------|:---:|:---:|
 | **Chunking** (gold POS) | **88.6%** | **0.838** |
 | Chunking (uçtan uca, tahmini POS) | 82.4% | 0.756 |
-| POS etiketleme | 91.3% | — |
+| POS etiketleme | 91.2% | — |
 | Clause (yan cümlecik) | 78.6% | 0.278 |
 
 <p align="center">
