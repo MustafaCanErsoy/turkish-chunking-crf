@@ -14,3 +14,6 @@ Thumbs.db
 report/_*.png
 report/_*.pdf
 *_tmp*
+
+# Başka projeye ait şablon (depoya dahil değil)
+kapak_buradan.html

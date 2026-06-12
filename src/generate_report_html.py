@@ -28,6 +28,7 @@ DATA = os.path.join(HERE, "..", "data", "chunks")
 RESULTS = os.path.join(HERE, "..", "results")
 REPORT = os.path.join(HERE, "..", "report")
 MODELS = os.path.join(HERE, "..", "models")
+ASSETS = os.path.join(HERE, "..", "assets")
 
 ORNEK_CUMLE = ("Dün akşam toplantıdan erken çıkan öğrencinin, hocasının önerdiği "
                "makaleyi kütüphanede dikkatlice okuduğunu fark ettim.")
@@ -38,10 +39,13 @@ def load(f):
         return pickle.load(fh)
 
 
-def img_b64(fname):
-    path = os.path.join(RESULTS, fname)
+def img_b64_abs(path):
     with open(path, "rb") as f:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode()
+
+
+def img_b64(fname):
+    return img_b64_abs(os.path.join(RESULTS, fname))
 
 
 def flat(seqs):
@@ -123,6 +127,7 @@ def main():
         chunk_rows=chunk_rows, ex_rows=ex_rows, ornek=ORNEK_CUMLE,
         cm_chunk=img_b64("confusion_chunk.png"),
         f1_chunk=img_b64("f1_chunk.png"),
+        logo=img_b64_abs(os.path.join(ASSETS, "btu_logo.png")),
         n_train=3435, n_test=1100,
     )
 
@@ -167,12 +172,51 @@ TEMPLATE = u"""<!DOCTYPE html>
   .row {{ display:flex; gap:10px; align-items:flex-start; }}
   .row > div {{ flex:1; }}
   .pb {{ page-break-before: always; }}
+
+  /* ── Kapak ── */
+  .cover {{ display:flex; flex-direction:column; align-items:center; text-align:center;
+    min-height:252mm; padding:6mm 0 4mm; page-break-after:always;
+    justify-content:space-between; font-family:"Times New Roman",Times,serif; color:#1a1a1a; }}
+  .cover-univ {{ font-size:20pt; font-weight:bold; letter-spacing:.3px; margin-bottom:6px; }}
+  .cover-fakulte {{ font-size:13.5pt; font-weight:bold; margin-bottom:4px; }}
+  .cover-bolum {{ font-size:12pt; color:#333; }}
+  .cover-logo-wrap {{ margin:20px 0; }}
+  .cover-logo {{ height:150px; width:auto; display:block; margin:0 auto; }}
+  .cover-title {{ font-size:17pt; font-weight:bold; line-height:1.45; margin-bottom:8px; }}
+  .cover-subtitle {{ font-size:11.5pt; color:#444; font-style:italic; }}
+  .cover-bottom {{ padding-top:8mm; }}
+  .cover-ders {{ font-size:11.5pt; color:#555; margin-bottom:22px; }}
+  .cover-danisman {{ font-size:12.5pt; font-weight:bold; margin-bottom:16px; }}
+  .cover-ogrenci {{ font-size:12.5pt; font-weight:bold; margin-bottom:2px; }}
+  .cover-no {{ font-size:11.5pt; color:#333; margin-bottom:16px; }}
+  .cover-tarih {{ font-size:11.5pt; color:#555; }}
 </style></head><body>
+
+<div class="cover">
+  <div>
+    <div class="cover-univ">BURSA TEKNİK ÜNİVERSİTESİ</div>
+    <div class="cover-fakulte">MÜHENDİSLİK VE DOĞA BİLİMLERİ FAKÜLTESİ</div>
+    <div class="cover-bolum">Bilgisayar Mühendisliği Bölümü</div>
+  </div>
+  <div class="cover-logo-wrap">
+    <img src="{logo}" class="cover-logo" alt="Bursa Teknik Üniversitesi">
+  </div>
+  <div>
+    <div class="cover-title">İsim ve Öbeklerin Saptanması (Chunking)</div>
+    <div class="cover-subtitle">Doğal Dil İşleme — Proje Konusu 3 · Türkçe için CRF Tabanlı Öbekleme</div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-ders">Doğal Dil İşleme — BLM0467</div>
+    <div class="cover-danisman">Dr. Öğr. Üyesi HAYRİ VOLKAN AGUN</div>
+    <div class="cover-ogrenci">Mustafa Can Ersoy</div>
+    <div class="cover-no">20360859046</div>
+    <div class="cover-tarih">Haziran 2026</div>
+  </div>
+</div>
 
 <h1>Doğal Dil İşleme Projesi</h1>
 <div class="sub">Konu 3: İsim ve Öbeklerin Saptanması (Chunking)</div>
 <div class="meta">Bursa Teknik Üniversitesi · Bilgisayar Mühendisliği · 2025–2026 Bahar</div>
-<div class="meta"><b>{ogrenciler}</b></div>
 
 <div class="kpi">
   <div><b>{chunk_acc}</b><span>Chunk - Kelime Doğruluğu</span></div>
