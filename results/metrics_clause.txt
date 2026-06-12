@@ -1,0 +1,38 @@
+============================================================
+GOREV: Clause (Yan Cümlecik)
+============================================================
+Test cumlesi : 1100
+Test kelimesi: 10032
+Token accuracy: 0.7860
+
+--- OBEK (ENTITY) DUZEYI [seqeval] ---
+Precision: 0.3560
+Recall   : 0.2278
+F1-measure: 0.2778
+
+              precision    recall  f1-score   support
+
+       ADVCL     0.3603    0.2414    0.2891       203
+      COMPCL     0.2394    0.1012    0.1423       168
+       RELCL     0.4037    0.3186    0.3562       204
+
+   micro avg     0.3560    0.2278    0.2778       575
+   macro avg     0.3345    0.2204    0.2625       575
+weighted avg     0.3404    0.2278    0.2700       575
+
+
+--- KELIME (TOKEN) DUZEYI sinif bazinda ---
+              precision    recall  f1-score   support
+
+     B-ADVCL     0.4338    0.2906    0.3481       203
+    B-COMPCL     0.3803    0.1607    0.2259       168
+     B-RELCL     0.4658    0.3676    0.4110       204
+     I-ADVCL     0.5482    0.3850    0.4523       665
+    I-COMPCL     0.4903    0.2224    0.3060       679
+     I-RELCL     0.6004    0.4440    0.5105       687
+           O     0.8367    0.9442    0.8872      7426
+
+    accuracy                         0.7860     10032
+   macro avg     0.5365    0.4021    0.4487     10032
+weighted avg     0.7546    0.7860    0.7616     10032
+

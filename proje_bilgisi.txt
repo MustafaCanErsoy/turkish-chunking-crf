@@ -1,0 +1,5 @@
+Proje konuları dosyada belirtilmiştir. Proje konuları dışında Tubitak yada BAP projesi dışında başka bir konuda çalışılmayacaktır. 
+Proje için 1 kisik, 2 kişi yada en fazla 3 veya 4 kişilik bir grup kurulabilir.
+Proje gönderisinde raporda bireysel çalışmalar hariç her bir öğrenci ismi belirtilmelidir.
+Proje de isterlerin yerine getirlmemesi durumunda projeden 0 puan alınabilir.  
+Proje teslim tarihi 12 Haziran 2026 Cuma (23:59) günüdür. Projeler zip ile sıkıştırılarak aşağıdaki alana yüklenmelidir.

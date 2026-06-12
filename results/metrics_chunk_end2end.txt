@@ -1,0 +1,44 @@
+============================================================
+GOREV: Chunking (Öbekleme)  [uctan uca / predicted POS]
+============================================================
+Test cumlesi : 1100
+Test kelimesi: 10032
+Token accuracy: 0.8243
+
+--- OBEK (ENTITY) DUZEYI [seqeval] ---
+Precision: 0.7487
+Recall   : 0.7634
+F1-measure: 0.7560
+
+              precision    recall  f1-score   support
+
+        ADJP     0.4889    0.4383    0.4623       454
+        ADVP     0.8557    0.7332    0.7897       461
+          NP     0.7458    0.7848    0.7648      3020
+          PP     0.6098    0.5137    0.5576       146
+          VP     0.7982    0.8408    0.8190      1727
+
+   micro avg     0.7487    0.7634    0.7560      5808
+   macro avg     0.6997    0.6621    0.6787      5808
+weighted avg     0.7466    0.7634    0.7540      5808
+
+
+--- KELIME (TOKEN) DUZEYI sinif bazinda ---
+              precision    recall  f1-score   support
+
+      B-ADJP     0.5774    0.5176    0.5459       454
+      B-ADVP     0.8835    0.7570    0.8154       461
+        B-NP     0.8322    0.8752    0.8531      3020
+        B-PP     0.6179    0.5205    0.5651       146
+        B-VP     0.8180    0.8616    0.8393      1727
+      I-ADJP     0.5116    0.4231    0.4632       208
+      I-ADVP     0.4839    0.2113    0.2941        71
+        I-NP     0.7097    0.7237    0.7166      1209
+        I-PP     0.6519    0.6023    0.6261       171
+        I-VP     0.5753    0.4809    0.5239       262
+           O     0.9878    0.9861    0.9870      2303
+
+    accuracy                         0.8243     10032
+   macro avg     0.6954    0.6327    0.6572     10032
+weighted avg     0.8195    0.8243    0.8207     10032
+
