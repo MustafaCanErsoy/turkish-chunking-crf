@@ -141,37 +141,40 @@ TEMPLATE = u"""<!DOCTYPE html>
 <html lang="tr"><head><meta charset="utf-8">
 <title>DDİ Projesi - Chunking Raporu</title>
 <style>
-  @page {{ size: A4; margin: 14mm 16mm; }}
+  @page {{ size: A4; margin: 18mm 18mm 16mm; }}
   * {{ box-sizing: border-box; }}
-  body {{ font-family: "Segoe UI", Arial, sans-serif; color:#1a1a1a;
-         font-size: 10.3pt; line-height: 1.42; margin:0; }}
-  h1 {{ font-size: 17pt; margin:0 0 2px; color:#16335c; text-align:center; }}
-  .sub {{ text-align:center; font-size:11pt; color:#16335c; font-weight:600;
-          margin-bottom:6px; }}
-  .meta {{ text-align:center; font-size:9.5pt; color:#444; margin-bottom:4px; }}
-  h2 {{ font-size:11.5pt; color:#16335c; border-bottom:2px solid #d7e0ee;
-        padding-bottom:2px; margin:13px 0 5px; }}
-  p {{ margin:4px 0; }}
-  ul {{ margin:4px 0 4px 0; padding-left:18px; }}
-  li {{ margin:1px 0; }}
-  table {{ border-collapse:collapse; width:100%; font-size:9.3pt; margin:5px 0; }}
-  th, td {{ border:1px solid #c4cdda; padding:2px 6px; text-align:center; }}
-  th {{ background:#eaf0f8; color:#16335c; }}
-  td:first-child, th:first-child {{ text-align:left; }}
-  .tot td {{ font-weight:700; background:#f3f7fc; }}
-  .kpi {{ display:flex; gap:8px; margin:6px 0; }}
-  .kpi div {{ flex:1; border:1px solid #c4cdda; border-radius:6px; padding:6px;
-              text-align:center; background:#f7faff; }}
-  .kpi b {{ display:block; font-size:15pt; color:#16335c; }}
-  .kpi span {{ font-size:8.6pt; color:#555; }}
-  figure {{ margin:6px 0; text-align:center; page-break-inside:avoid; }}
-  figure img {{ max-width:100%; border:1px solid #d7e0ee; }}
-  figcaption {{ font-size:8.6pt; color:#555; margin-top:2px; }}
-  code, .mono {{ font-family:Consolas,"Courier New",monospace; font-size:9pt; }}
-  .note {{ font-size:8.8pt; color:#555; }}
-  .row {{ display:flex; gap:10px; align-items:flex-start; }}
-  .row > div {{ flex:1; }}
+  body {{ font-family: "Times New Roman", Times, serif; color:#1a1a1a;
+         font-size: 11pt; line-height: 1.5; margin:0; }}
+  h1 {{ font-size: 16pt; margin:0 0 2px; color:#1a1a1a; text-align:center; }}
+  .sub {{ text-align:center; font-size:11.5pt; color:#333; font-weight:bold;
+          margin-bottom:2px; }}
+  .meta {{ text-align:center; font-size:10pt; color:#555; margin-bottom:12px;
+           padding-bottom:8px; border-bottom:1.5px solid #333; }}
+  h2 {{ font-size:13pt; color:#2c3e50; margin:18px 0 7px; padding-bottom:4px;
+        border-bottom:1.5px solid #d0d7df; page-break-after:avoid; }}
+  h3 {{ font-size:11.5pt; color:#34495e; margin:12px 0 4px; page-break-after:avoid; }}
+  p {{ margin:6px 0; text-align:justify; }}
+  ul {{ margin:5px 0 8px 20px; padding:0; }}
+  li {{ margin:2px 0; }}
+  table {{ border-collapse:collapse; width:100%; font-size:10pt; margin:8px 0;
+           page-break-inside:avoid; }}
+  table.veri th {{ background:#2c3e50; color:#fff; padding:5px 9px; text-align:center; }}
+  table.veri td {{ padding:4px 9px; border-bottom:1px solid #e0e0e0; text-align:center; }}
+  table.veri tr:nth-child(even) td {{ background:#f7f9fc; }}
+  table.veri td:first-child {{ text-align:left; }}
+  .tot td {{ font-weight:bold; background:#eef3f9; color:#1a6830; }}
+  figure {{ margin:10px auto; text-align:center; page-break-inside:avoid; }}
+  figure img {{ max-width:100%; border:1px solid #dce3ea; }}
+  figcaption {{ font-size:9.5pt; color:#555; margin-top:4px; font-style:italic; }}
+  code, .mono {{ font-family:"Courier New",monospace; font-size:9.5pt; }}
+  .note {{ font-size:9.5pt; color:#444; }}
   .pb {{ page-break-before: always; }}
+  .abstract {{ background:#f7f9fc; border-left:4px solid #2980b9; padding:12px 16px;
+    margin:6px 0 14px; font-size:10.5pt; line-height:1.5; text-align:justify;
+    page-break-inside:avoid; }}
+  .abstract h2 {{ font-size:12pt; margin:0 0 6px; border:none; padding:0; color:#2c3e50; }}
+  .abstract a {{ color:#2061a8; }}
+  .kv {{ margin-top:6px; }}
 
   /* ── Kapak ── */
   .cover {{ display:flex; flex-direction:column; align-items:center; text-align:center;
@@ -214,93 +217,108 @@ TEMPLATE = u"""<!DOCTYPE html>
   </div>
 </div>
 
-<h1>Doğal Dil İşleme Projesi</h1>
-<div class="sub">Konu 3: İsim ve Öbeklerin Saptanması (Chunking)</div>
-<div class="meta">Bursa Teknik Üniversitesi · Bilgisayar Mühendisliği · 2025–2026 Bahar</div>
+<h1>İsim ve Öbeklerin Saptanması (Chunking)</h1>
+<div class="sub">Doğal Dil İşleme — Proje Konusu 3</div>
+<div class="meta">Bursa Teknik Üniversitesi · Bilgisayar Mühendisliği Bölümü · 2025–2026 Bahar</div>
 
-<div class="kpi">
-  <div><b>{chunk_acc}</b><span>Chunk - Kelime Doğruluğu</span></div>
-  <div><b>{chunk_f1}</b><span>Chunk - Öbek F1</span></div>
-  <div><b>{pos_acc}</b><span>POS Doğruluğu</span></div>
+<div class="abstract">
+  <h2>Özet</h2>
+  <b>Ne yaptık?</b> Bu projede, verilen bir Türkçe cümlede yer alan öbekleri
+  (isim NP, eylem VP, sıfat ADJP, zarf ADVP, edat PP) ve cümle içindeki yan
+  cümlecikleri (ilgi RELCL, tümleç COMPCL, zarf ADVCL) otomatik olarak işaretleyen,
+  dizisel etiketleme (<i>sequence labeling</i>) temelli bir <i>chunking (sığ
+  ayrıştırma)</i> sistemi geliştirdik. Tüm işaretlemeler CoNLL / BIO biçimindedir.
+  <b>Neler kullandık?</b> Eğitim ve test verisi Universal Dependencies Türkçe-IMST
+  treebank'inden türetilmiş; sınıflandırıcı olarak istatistiksel <i>CRF (Conditional
+  Random Fields)</i> kullanılmış; öznitelik çıkarımı ile değerlendirme Python
+  (scikit-learn, sklearn-crfsuite, seqeval, matplotlib) ile gerçekleştirilmiştir.
+  Sistem, ana görevde <b>kelime düzeyinde {chunk_acc} doğruluk</b> ve
+  <b>öbek düzeyinde {chunk_f1} F1</b> başarısı elde etmiştir.
+  <div class="kv"><b>Anahtar Kelimeler:</b> Chunking, Sığ Ayrıştırma, CRF, Dizisel
+  Etiketleme, CoNLL/BIO, Türkçe Doğal Dil İşleme.</div>
+  <div class="kv"><b>Kaynak Kod (GitHub):</b>
+  <a href="https://github.com/MustafaCanErsoy/turkish-chunking-crf">github.com/MustafaCanErsoy/turkish-chunking-crf</a></div>
 </div>
 
-<h2>1. Ne Yaptık?</h2>
-<p>Verilen bir Türkçe cümlede yer alan <b>öbekleri</b> (isim NP, eylem VP, sıfat
-ADJP, zarf ADVP, edat PP) ve cümle içindeki <b>yan cümlecikleri</b> (ilgi RELCL,
-tümleç COMPCL, zarf ADVCL) otomatik olarak işaretleyen bir <b>chunking (sığ
-ayrıştırma)</b> sistemi geliştirdik. Problemi <b>dizisel etiketleme (sequence
-labeling)</b> olarak modelledik ve istatistiksel bir makine öğrenmesi yöntemi olan
-<b>CRF (Conditional Random Fields)</b> ile çözdük. Tüm işaretlemeler
-<b>CoNLL / BIO</b> formatındadır (B = öbek başı, I = devamı, O = öbek dışı).
-Sistem, ham bir cümleyi alıp uçtan uca <b>POS → CHUNK → CLAUSE</b> olarak
-etiketleyebilmektedir.</p>
+<h2>1. Problem Tanımı</h2>
+<p>Chunking (sığ ayrıştırma), bir cümleyi tam sözdizimsel ağaca ayrıştırmadan,
+kelimeleri ardışık ve örtüşmeyen anlamlı öbeklere (isim öbeği, eylem öbeği vb.)
+gruplama görevidir. Bu çalışmada amaç, verilen bir Türkçe cümlede her kelimenin
+ait olduğu öbeği ve —ikincil katman olarak— bulunduğu yan cümleciği otomatik olarak
+belirlemektir. Görev, <b>BIO etiketleme şeması</b> ile dizisel etiketleme problemi
+olarak modellenmiştir: <code>B-</code> bir öbeğin başını, <code>I-</code> devamını,
+<code>O</code> ise hiçbir öbeğe ait olmamayı gösterir.</p>
+<p>İki etiket katmanı üretilmektedir: <b>CHUNK</b> (NP, VP, ADJP, ADVP, PP) ve
+<b>CLAUSE</b> (RELCL, COMPCL, ADVCL). Sistem, ham bir cümleyi alıp uçtan uca
+<b>POS → CHUNK → CLAUSE</b> sırasıyla işaretler. Örnek bir CoNLL/BIO satır dizisi:
+<span class="mono">1 Dün ADV B-ADVP · 3 toplantıdan NOUN B-NP · 5 çıkan VERB B-VP ·
+16 . PUNCT O</span></p>
 
-<h2>2. Neler Kullandık?</h2>
-<div class="row">
-<div>
-<ul>
-<li><b>Veri:</b> Universal Dependencies <b>Türkçe-IMST</b> treebank (CC BY-SA).
-Bağımlılık ağacından kurallarla öbek/cümlecik BIO etiketleri türetildi.</li>
-<li><b>Model:</b> CRF — <code>sklearn-crfsuite</code>, L-BFGS, L1/L2
-düzenlileştirme.</li>
-<li><b>Kütüphaneler:</b> scikit-learn, sklearn-crfsuite, seqeval, matplotlib,
-numpy.</li>
-</ul>
-</div>
-<div>
-<ul>
-<li><b>Öznitelikler:</b> kelime, 1–4 harf ön/son ekler, kelime şekli, büyük/küçük
-harf bayrakları, <b>UPOS</b> ve ±2 komşuluk bağlamı.</li>
-<li><b>Veri büyüklüğü:</b> {n_train} eğitim / {n_test} test cümlesi.</li>
-<li><b>3 model:</b> POS, CHUNK (ana görev), CLAUSE.</li>
-</ul>
-</div>
-</div>
+<h2>2. Kullanılan Yöntemler ve Araçlar</h2>
+<h3>2.1 Veri Kümesi</h3>
+<p>Eğitim ve test için açık lisanslı (CC BY-SA) <b>Universal Dependencies
+Türkçe-IMST</b> treebank'i kullanılmıştır. Treebank'in bağımlılık (dependency)
+çözümlemesinden, deterministik dilbilgisi kurallarıyla öbek ve cümlecik BIO
+etiketleri türetilmiştir. Toplam <b>{n_train} eğitim</b> ve <b>{n_test} test</b>
+cümlesi kullanılmıştır.</p>
+<h3>2.2 Öznitelikler</h3>
+<p>Her kelime için yüzeysel ve bağlamsal öznitelikler çıkarılmıştır: küçük harfli
+kelime, 1–4 harflik ön/son ekler, kelime şekli, büyük/küçük harf ve rakam
+bayrakları, kelime uzunluğu, <b>UPOS</b> etiketi ve ±2 komşuluk penceresindeki
+sözcük/POS bilgileri. Türkçe sondan eklemeli bir dil olduğundan, son ek
+öznitelikleri öbek türünü ayırt etmede belirleyicidir.</p>
+<h3>2.3 Model ve Araçlar</h3>
+<p>Sınıflandırıcı olarak, dizisel etiketlemenin standart istatistiksel yöntemi olan
+<b>CRF (Conditional Random Fields)</b> kullanılmıştır (<code>sklearn-crfsuite</code>,
+L-BFGS, L1/L2 düzenlileştirme). CRF, etiketler arası geçiş bağımlılıklarını (ör.
+<code>I-NP</code> ancak <code>B-NP</code>/<code>I-NP</code> ardından gelebilir) doğal
+olarak modellediğinden bu görev için uygundur. Üç ayrı model eğitilmiştir: POS
+etiketleyici, CHUNK (ana görev) ve CLAUSE. Değerlendirme metrikleri ve grafikler
+scikit-learn, seqeval ve matplotlib ile üretilmiştir.</p>
 
-<p class="note"><b>Örnek CoNLL/BIO işaretleme:</b>
-<span class="mono">1 Dün ADV B-ADVP &nbsp; 3 toplantıdan NOUN B-NP &nbsp;
-5 çıkan VERB B-VP &nbsp; 16 . PUNCT O</span></p>
-
-<h2>3. Sonuçlar — Ana Görev: Chunking</h2>
-<p>Test kümesinde sınıf bazında başarı (öbek/entity düzeyi, seqeval):</p>
-<table>
+<h2>3. Sonuçlar (Çıktılar)</h2>
+<p>Ana görev olan chunking için test kümesinde sınıf bazında öbek (entity) düzeyi
+başarı değerleri Tablo 1'de verilmiştir.</p>
+<table class="veri">
 <tr><th>Öbek</th><th>Precision</th><th>Recall</th><th>F1</th><th>Adet</th></tr>
 {chunk_rows}
 </table>
-<p class="note">Kelime düzeyi doğruluk: <b>{chunk_acc}</b> ·
-Genel öbek F1: <b>{chunk_f1}</b> (P={chunk_p}, R={chunk_r}).</p>
+<p class="note">Tablo 1. Chunking sınıf bazında başarı. Kelime düzeyi doğruluk:
+<b>{chunk_acc}</b>; genel öbek F1: <b>{chunk_f1}</b> (P={chunk_p}, R={chunk_r}).</p>
 
-<div class="row">
-<figure><img src="{cm_chunk}">
-<figcaption>Karışıklık matrisi (her sınıf, normalize) — Chunking</figcaption></figure>
-</div>
-<figure><img src="{f1_chunk}" style="max-width:88%">
-<figcaption>Sınıf bazında F1 — Chunking</figcaption></figure>
+<figure><img src="{cm_chunk}" style="max-width:72%">
+<figcaption>Şekil 1. Karışıklık matrisi (her sınıf, normalize) — Chunking.</figcaption></figure>
+<figure><img src="{f1_chunk}" style="max-width:84%">
+<figcaption>Şekil 2. Sınıf bazında F1 değerleri — Chunking.</figcaption></figure>
 
-<h2>4. Diğer Sonuçlar ve Örnek Çıktı</h2>
-<table>
+<p>Tüm görevlerin özet karşılaştırması Tablo 2'de sunulmuştur. Uçtan uca senaryoda
+POS etiketi de model tarafından tahmin edildiğinden başarı bir miktar düşmekte; bu,
+POS bilgisinin chunking için değerini göstermektedir. Cümlecik katmanı uzun ve iç
+içe geçen kapsamlar içerdiğinden öbek düzeyi F1'i düşük, kelime düzeyi doğruluğu
+yüksek kalır.</p>
+<table class="veri">
 <tr><th>Görev</th><th>Kelime Doğruluğu</th><th>Öbek F1</th></tr>
 <tr><td>POS etiketleme</td><td>{pos_acc}</td><td>—</td></tr>
 <tr><td>Chunking (gold POS)</td><td>{chunk_acc}</td><td>{chunk_f1}</td></tr>
 <tr><td>Chunking (uçtan uca, tahmini POS)</td><td>{e2e_acc}</td><td>{e2e_f1}</td></tr>
 <tr><td>Clause (yan cümlecik)</td><td>{clause_acc}</td><td>{clause_f1}</td></tr>
 </table>
-<p class="note">Uçtan uca senaryoda POS da model tarafından tahmin edildiğinden
-başarı bir miktar düşer; bu, POS bilgisinin chunking için değerini gösterir.
-Cümlecik katmanı uzun ve iç içe kapsamlar içerdiğinden öbek-düzeyi F1'i düşüktür,
-kelime düzeyi doğruluğu yüksektir.</p>
+<p class="note">Tablo 2. Tüm görevlerin özet başarı karşılaştırması.</p>
 
-<p><b>Örnek çıktı</b> (ham cümle → sistem işaretlemesi):<br>
-<span class="note mono">{ornek}</span></p>
-<table>
+<h2>4. Örnek Çıktı ve Sonuç</h2>
+<p>Aşağıda, eğitilmiş sistemin ham bir Türkçe cümleye ürettiği uçtan uca çıktı
+(POS, CHUNK ve CLAUSE katmanları) gösterilmektedir:</p>
+<p class="note mono">{ornek}</p>
+<table class="veri">
 <tr><th>#</th><th>Kelime</th><th>POS</th><th>CHUNK</th><th>CLAUSE</th></tr>
 {ex_rows}
 </table>
-
-<p class="note">Çalıştırma: <code>python src/run_all.py</code> (indir→eğit→test→rapor)
-veya <code>python src/predict.py "cümleniz"</code>. Kaynak kod <code>src/</code>,
-veri <code>data/chunks/</code>, eğitilmiş modeller <code>models/</code>,
-metrik ve grafikler <code>results/</code> klasöründedir.</p>
+<p>Sonuç olarak, Türkçe için CRF tabanlı bir öbekleme sistemi geliştirilmiş; eğitim
+ve test boru hattı uçtan uca çalışır biçimde kurulmuştur. Ana görevde kelime
+düzeyinde {chunk_acc} doğruluk ve öbek düzeyinde {chunk_f1} F1 elde edilmiş, tüm
+işaretlemeler CoNLL/BIO biçiminde üretilmiş ve her sınıf için başarı oranları ile
+karışıklık matrisi raporlanmıştır. Çalıştırma: <code>python src/run_all.py</code>
+veya <code>python src/predict.py "cümleniz"</code>.</p>
 
 </body></html>
 """
