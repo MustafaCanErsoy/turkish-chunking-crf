@@ -1,8 +1,8 @@
-<h1 align="center">🧩 Türkçe Chunking — İsim ve Öbeklerin Saptanması</h1>
+<h1 align="center">Turkish Chunking — Phrase and Clause Detection with CRF</h1>
 
 <p align="center">
-  <b>Doğal Dil İşleme Projesi · Konu 3</b><br>
-  Bursa Teknik Üniversitesi · Bilgisayar Mühendisliği · 2025–2026 Bahar
+  <b>Natural Language Processing Project</b><br>
+  Bursa Technical University · Computer Engineering · 2025–2026 Spring
 </p>
 
 <p align="center">
@@ -11,108 +11,117 @@
   <img alt="Format" src="https://img.shields.io/badge/Format-CoNLL%20%2F%20BIO-success">
   <img alt="Chunk F1" src="https://img.shields.io/badge/Chunk%20F1-0.838-brightgreen">
   <img alt="Accuracy" src="https://img.shields.io/badge/Token%20Acc-88.6%25-brightgreen">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-lightgrey">
 </p>
 
 ---
 
-Verilen bir Türkçe cümlede **isim (NP), eylem (VP), sıfat (ADJP), zarf (ADVP) ve
-edat (PP) öbeklerini** ve cümle içindeki **yan cümlecikleri (RELCL / COMPCL / ADVCL)**
-otomatik olarak işaretleyen, **CRF (Conditional Random Fields)** tabanlı bir
-*chunking (sığ ayrıştırma)* sistemi. Tüm etiketleme **CoNLL / BIO** formatındadır.
+A **shallow parsing (chunking)** system for Turkish, built on **Conditional Random Fields**. Given a
+Turkish sentence, it automatically tags **noun (NP), verb (VP), adjective (ADJP), adverb (ADVP) and
+postpositional (PP) phrases**, along with **subordinate clauses** (RELCL / COMPCL / ADVCL). All
+labelling follows the **CoNLL / BIO** format.
 
-## 📋 İçindekiler
-- [Özellikler](#-özellikler)
-- [Hızlı Başlangıç](#-hızlı-başlangıç)
-- [Sonuçlar](#-sonuçlar)
-- [Nasıl Çalışır?](#-nasıl-çalışır)
-- [Proje Yapısı](#-proje-yapısı)
-- [Örnek Çıktı](#-örnek-çıktı)
+## Contents
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Results](#results)
+- [How It Works](#how-it-works)
+- [Project Structure](#project-structure)
+- [Sample Output](#sample-output)
 
-## ✨ Özellikler
-- 🔤 **5 öbek türü** (NP, VP, ADJP, ADVP, PP) + **3 cümlecik türü** (RELCL, COMPCL, ADVCL)
-- 🧠 **İstatistiksel ML**: Conditional Random Fields (dizisel etiketleme)
-- 🔁 **Uçtan uca**: ham cümle → POS → CHUNK → CLAUSE
-- 📊 Otomatik **precision / recall / F1 / accuracy + karışıklık matrisi + grafikler**
-- 🇹🇷 Gerçek veri: **Universal Dependencies Türkçe-IMST** treebank
+## Features
 
-## 🚀 Hızlı Başlangıç
+- **5 phrase types** (NP, VP, ADJP, ADVP, PP) plus **3 clause types** (RELCL, COMPCL, ADVCL)
+- **Statistical sequence labelling** with Conditional Random Fields
+- **End-to-end pipeline**: raw sentence → POS → CHUNK → CLAUSE
+- Automatic **precision / recall / F1 / accuracy**, confusion matrices and plots
+- Trained on real data: the **Universal Dependencies Turkish-IMST** treebank
+
+## Quick Start
 
 ```bash
-# 1) Bağımlılıklar
+# 1) Install dependencies
 pip install -r requirements.txt
 
-# 2) Tüm boru hattı: indir → dönüştür → eğit → test
+# 2) Full pipeline: download → convert → train → evaluate
 python src/run_all.py
 
-# 3) Ham bir cümleyi öbeklere ayır
+# 3) Chunk a raw sentence
 python src/predict.py "Dün akşam toplantıdan erken çıkan öğrenci eve gitti."
 ```
 
-> Windows kullanıcıları tek tıkla **`calistir.bat`** dosyasını çalıştırabilir.
+> On Windows you can run **`calistir.bat`** instead to execute the whole pipeline in one step.
 
-## 📊 Sonuçlar
+## Results
 
-Test kümesi (1.100 cümle / 10.032 kelime):
+Evaluated on a held-out test set of 1,100 sentences / 10,032 tokens.
 
-| Görev | Kelime Doğruluğu | Öbek F1 |
+| Task | Token Accuracy | Phrase F1 |
 |------|:---:|:---:|
 | **Chunking** (gold POS) | **88.6%** | **0.838** |
-| Chunking (uçtan uca, tahmini POS) | 82.4% | 0.756 |
-| POS etiketleme | 91.2% | — |
-| Clause (yan cümlecik) | 78.6% | 0.278 |
+| Chunking (end-to-end, predicted POS) | 82.4% | 0.756 |
+| POS tagging | 91.2% | — |
+| Clause detection | 78.6% | 0.278 |
 
 <p align="center">
-  <img src="results/confusion_chunk.png" width="46%" alt="Karışıklık matrisi">
-  <img src="results/f1_chunk.png" width="52%" alt="Sınıf bazında F1">
+  <img src="results/confusion_chunk.png" width="46%" alt="Confusion matrix">
+  <img src="results/f1_chunk.png" width="52%" alt="Per-class F1">
 </p>
 
-## 🔍 Nasıl Çalışır?
+**Reading these numbers.** Chunking with gold POS tags reaches 0.838 F1; swapping in predicted POS
+costs about 8 points of F1, which is the expected error-propagation penalty from the 91.2% POS
+tagger. Clause detection is the clear weak point: token accuracy looks reasonable at 78.6%, but a
+span-level F1 of 0.278 shows the model rarely gets a full clause boundary right. Clause spans are
+long and comparatively rare in the treebank, so the CRF tends to under-segment them — this is the
+most promising area for future work.
+
+## How It Works
 
 ```
-UD Türkçe-IMST (CoNLL-U)
-        │  conllu_to_chunks.py  (bağımlılık ağacı → BIO etiket)
+UD Turkish-IMST (CoNLL-U)
+        │  conllu_to_chunks.py  (dependency tree → BIO tags)
         ▼
 data/chunks/*.conll  (ID FORM UPOS CHUNK CLAUSE)
-        │  features.py  (kelime, ön/son ek, şekil, UPOS, ±2 bağlam)
+        │  features.py  (word, prefixes/suffixes, shape, UPOS, ±2 context)
         ▼
-   CRF eğitimi (train.py)  →  models/*.pkl
+   CRF training (train.py)  →  models/*.pkl
         │
         ▼
-   Değerlendirme (evaluate.py) → results/  ·  Tahmin (predict.py)
+   Evaluation (evaluate.py) → results/  ·  Prediction (predict.py)
 ```
 
-- **Veri:** UD Türkçe-IMST treebank'inin bağımlılık çözümlemesinden, deterministik
-  dilbilgisi kurallarıyla öbek/cümlecik BIO etiketleri türetilir.
-- **Öznitelikler:** küçük harf, 1–4 harf ön/son ekler, kelime şekli, büyük/küçük
-  harf bayrakları, UPOS ve ±2 komşuluk bağlamı.
-- **Model:** CRF (`sklearn-crfsuite`), L-BFGS, L1/L2 düzenlileştirme.
+- **Data.** Phrase and clause BIO labels are derived from the dependency parses in the UD
+  Turkish-IMST treebank using deterministic grammatical rules.
+- **Features.** Lowercased form, 1–4 character prefixes and suffixes, word shape, capitalisation
+  flags, UPOS tag, and a ±2 token context window.
+- **Model.** CRF via `sklearn-crfsuite`, trained with L-BFGS and L1/L2 regularisation.
 
-## 📁 Proje Yapısı
+## Project Structure
 
 ```
 .
 ├── src/
-│   ├── download_data.py        # UD treebank indir
+│   ├── download_data.py        # Fetch the UD treebank
 │   ├── conllu_to_chunks.py     # CoNLL-U → Chunk CoNLL (BIO)
-│   ├── features.py             # öznitelik çıkarımı
-│   ├── train.py                # CRF eğitimi (pos, chunk, clause)
-│   ├── evaluate.py             # metrik + confusion matrix + grafik
-│   ├── predict.py              # ham cümle → öbekler (demo)
-│   └── run_all.py              # uçtan uca boru hattı
+│   ├── features.py             # Feature extraction
+│   ├── train.py                # CRF training (pos, chunk, clause)
+│   ├── evaluate.py             # Metrics, confusion matrix, plots
+│   ├── predict.py              # Raw sentence → phrases (demo)
+│   └── run_all.py              # End-to-end pipeline
 ├── data/
-│   ├── ud/                     # ham UD treebank (CoNLL-U)
-│   └── chunks/                 # etiketli veri (CoNLL/BIO)
-├── models/                     # eğitilmiş CRF modelleri (.pkl)
-├── results/                    # metrikler (.txt) + grafikler (.png)
-├── RAPOR_20360859046_MustafaCanErsoy.pdf  # 📄 RAPOR (proje raporu, PDF)
+│   ├── ud/                     # Raw UD treebank (CoNLL-U)
+│   └── chunks/                 # Labelled data (CoNLL/BIO)
+├── models/                     # Trained CRF models (.pkl)
+├── results/                    # Metrics (.txt) and plots (.png)
 ├── requirements.txt
-└── calistir.bat                # Windows tek-tık çalıştırma
+└── calistir.bat                # One-click pipeline runner for Windows
 ```
 
-## 🧪 Örnek Çıktı
+## Sample Output
 
 ```
 $ python src/predict.py "Dün akşam toplantıdan erken çıkan öğrenci eve gitti."
+  ("The student who left the meeting early last night went home.")
 
 # columns = ID FORM UPOS CHUNK CLAUSE
 1  Dün          NOUN   B-NP    B-RELCL
@@ -126,13 +135,19 @@ $ python src/predict.py "Dün akşam toplantıdan erken çıkan öğrenci eve gi
 9  .            PUNCT  O       O
 ```
 
-## 🏷️ Etiket Kümeleri
-- **CHUNK:** `B-/I-` ile **NP, VP, ADJP, ADVP, PP** ve `O`
-- **CLAUSE:** `B-/I-` ile **RELCL, COMPCL, ADVCL** ve `O`
+## Tag Sets
 
-## 📜 Lisans / Veri
-Eğitim verisi [Universal Dependencies Türkçe-IMST](https://github.com/UniversalDependencies/UD_Turkish-IMST)
-treebank'inden türetilmiştir (CC BY-SA 4.0).
+- **CHUNK:** `B-` / `I-` prefixes over **NP, VP, ADJP, ADVP, PP**, plus `O`
+- **CLAUSE:** `B-` / `I-` prefixes over **RELCL, COMPCL, ADVCL**, plus `O`
+
+## License and Data
+
+The source code is released under the [MIT License](LICENSE).
+
+Training data is derived from the
+[Universal Dependencies Turkish-IMST](https://github.com/UniversalDependencies/UD_Turkish-IMST)
+treebank and remains under its original **CC BY-SA 4.0** licence. The MIT licence covers this
+repository's code only, not the derived treebank data.
 
 ---
-<p align="center"><sub>Mustafa Can Ersoy — 20360859046</sub></p>
+<p align="center"><sub>Mustafa Can Ersoy</sub></p>
