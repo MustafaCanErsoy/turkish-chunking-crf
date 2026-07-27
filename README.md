@@ -113,6 +113,7 @@ data/chunks/*.conll  (ID FORM UPOS CHUNK CLAUSE)
 │   └── chunks/                 # Labelled data (CoNLL/BIO)
 ├── models/                     # Trained CRF models (.pkl)
 ├── results/                    # Metrics (.txt) and plots (.png)
+├── report.pdf                  # Full project report
 ├── requirements.txt
 └── calistir.bat                # One-click pipeline runner for Windows
 ```
